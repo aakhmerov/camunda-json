@@ -5,11 +5,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
-
-import org.camunda.bpm.engine.impl.util.json.JSONArray;
-import spinjar.com.fasterxml.jackson.databind.ObjectMapper;
-import spinjar.com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class StartProcess {
   
@@ -18,13 +16,13 @@ public class StartProcess {
   public static void main(String[] args) throws Exception {
     ObjectNode entity = om.createObjectNode();
     ObjectNode variables = entity.putObject("variables");
-    JSONArray demo = new JSONArray("[{\"network\":\"192.168.0.0\",\"mask\":\"24\",\"longmask\":\"255.255.255.0\",\"gateway\":\"192.168.0.1\",\"priority\":100},{\"network\":\"192.168.2.0\",\"mask\":\"24\",\"longmask\":\"255.255.255.0\",\"gateway\":\"192.168.2.1\",\"priority\":100}]");
-
+    String demo = "[{\"network\":\"192.168.0.0\",\"mask\":\"24\",\"longmask\":\"255.255.255.0\",\"gateway\":\"192.168.0.1\",\"priority\":100},{\"network\":\"192.168.2.0\",\"mask\":\"24\",\"longmask\":\"255.255.255.0\",\"gateway\":\"192.168.2.1\",\"priority\":100}]";
+    JsonNode rootArray = om.readTree(demo);
     ObjectNode demoNode = variables.putObject("demo");
     demoNode.put("type", "Object");
     
     //set the value as a String
-    demoNode.putPOJO("value", demo);
+    demoNode.put("value", rootArray);
     
     //set the value as a json array
     //demoNode.set("value", om.readTree(demo));
